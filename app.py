@@ -26,11 +26,11 @@ def predict_fraud(amount, oldbalanceOrg, newbalanceOrig, oldbalanceDest, newbala
         "diff_org", "diff_dest", "type_CASH_OUT", "type_DEBIT", "type_PAYMENT", "type_TRANSFER"
     ])
 
-    # Predict
+    
     prediction = model.predict(input_df)[0]
     return "FRAUD ⚠️" if prediction == 1 else "NOT FRAUD ✅"
 
-# Build Gradio interface
+
 iface = gr.Interface(
     fn=predict_fraud,
     inputs=[
@@ -46,6 +46,9 @@ iface = gr.Interface(
     description="Enter transaction details to predict if it's FRAUD or NOT FRAUD."
 )
 
-# Launch locally
+
 if __name__ == "__main__":
-    iface.launch(share=True)
+    import os
+    port = int(os.environ.get("PORT", 7860))  
+    iface.launch(server_name="0.0.0.0", server_port=port)
+
